@@ -35,4 +35,11 @@ describe('GET /api/v0/users/me', () => {
   it('should not return the user info for unauthenticated users)', () => {
     return request(app.getHttpServer()).get('/api/v0/users/me').expect(401);
   });
+
+  it('should not return the user info for authenticated users with invalid token)', () => {
+    return request(app.getHttpServer())
+      .get('/api/v0/users/me')
+      .set('Authorization', `Bearer not-a-valid-token`)
+      .expect(401);
+  });
 });
