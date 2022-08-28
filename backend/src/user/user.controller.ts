@@ -6,7 +6,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // get email from jwt to get user email
+  // auth middleware injects req.user with the email of the user
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')
   async getMe(@Request() { user }) {
