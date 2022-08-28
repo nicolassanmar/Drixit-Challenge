@@ -14,7 +14,7 @@ Some utility scripts make use of docker and docker-compose commands to create a 
 
 This project was built with the [Nest](https://github.com/nestjs/nest) framework in TypeScript, using express.js as the underlying layer. This was done because this framework provides a lot of features that make it easy to build a scalable and maintainable backend. The project is structured in a way that makes it easy to add new features and to maintain the existing ones.
 
-The project was built using TDD, with the help of Jest and Supertest. This allowed me to write the code in a way that allowed me to be sure the API was developed according to the requirements. The tests are run with a sample database in a docker container so they can be run in any environment.
+The project was built using TDD, with the help of Jest and Supertest. This allowed me to write the code in a way that I could make sure the API was developed according to the requirements. The tests are run with a sample database in a docker container so they can be run in any environment.
 
 The project uses [Mongoose](https://mongoosejs.com/) to interact with the MongoDB database. This is a popular library that makes it easy to define schemas and models, and to interact with the database. TypeORM and Prisma are also good alternatives, but they do not provide full support for MongoDB.
 
