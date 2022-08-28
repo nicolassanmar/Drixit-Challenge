@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, VersioningType } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
@@ -12,6 +12,12 @@ describe('GET /api/v0/users/me', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+
+    app.setGlobalPrefix('api/');
+
+    app.enableVersioning({
+      type: VersioningType.URI,
+    });
     await app.init();
   });
 
@@ -19,7 +25,7 @@ describe('GET /api/v0/users/me', () => {
     return request(app.getHttpServer())
       .post('/api/v0/authenticate')
       .send({ email: 'it@drixit.com', password: 'some-password' })
-      .expect(200)
+      .expect(201)
       .then(async (response) => {
         const { jwt } = response.body;
         return request(app.getHttpServer())
