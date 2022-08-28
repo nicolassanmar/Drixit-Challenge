@@ -1,30 +1,26 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Drixit Challenge Backend
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is the backend solution for the Drixit Fullstack Challenge. It is a REST API that allows certain users to log in and get their user info.
+
+## Requirements
+
+This solution uses node v16.17.0 and npm v8.18.0. It is recommended to use these versions to run the project, but using the latests versions should also work.
+
+Some utility scripts make use of docker and docker-compose commands to create a local MongoDB instance. If you don't have these installed, you can still run the project, but you will have to provide your own MongoDB instance.
+
+## Design decisions
+
+This project was built with the [Nest](https://github.com/nestjs/nest) framework in TypeScript, using express.js as the underlying layer. This was done because this framework provides a lot of features that make it easy to build a scalable and maintainable backend. The project is structured in a way that makes it easy to add new features and to maintain the existing ones.
+
+The project was built using TDD, with the help of Jest and Supertest. This allowed me to write the code in a way that allowed me to be sure the API was developed according to the requirements. The tests are run with a sample database in a docker container so they can be run in any environment.
+
+The project uses [Mongoose](https://mongoosejs.com/) to interact with the MongoDB database. This is a popular library that makes it easy to define schemas and models, and to interact with the database. TypeORM and Prisma are also good alternatives, but they do not provide full support for MongoDB.
+
+The project uses [Passport](http://www.passportjs.org/) to handle authentication. This is a popular library that makes it easy to add different authentication strategies. It also provides a middleware that can be used to protect routes. This project uses the [passport-local](http://www.passportjs.org/packages/passport-local/) strategy to authenticate users with email and password, and the [passport-jwt](http://www.passportjs.org/packages/passport-jwt/) strategy to guard routes that require authentication (such as `GET /users/me`).
+
+The JWT strategy is configured to use a secret key to sign the tokens, this is not the best way to do it, but it is the easiest to implement. A better way would be to use a public/private key pair, but this would require more configuration and would make the project more complex.
 
 ## Installation
 
@@ -32,42 +28,18 @@
 $ npm install
 ```
 
-## Running the app
+## Deploy locally
+
+The following command will deploy the backend application as well as a local instance of MongoDB (with docker), seeded with the users found in the challenge. It will also deploy an instance of mongo-express, a web interface to manage the database, at [http://localhost:8081/](http://localhost:8081/).
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+$ npm run start:local
 ```
 
-## Test
+## Testing
+
+Acceptance E2E tests are written with [Jest](https://jestjs.io/). These tests are based on the challenge requirements, using the contents of the users.ts file. A utility command to run a seeded To run the tests, run the following command:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ npm run test:acceptance
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
