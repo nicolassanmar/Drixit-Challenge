@@ -42,4 +42,7 @@ describe('GET /api/v0/users/me', () => {
       .set('Authorization', `Bearer not-a-valid-token`)
       .expect(401);
   });
+  afterAll(async () => {
+    await app.close();
+  });
 });

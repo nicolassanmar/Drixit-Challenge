@@ -25,4 +25,12 @@ export class AuthService {
       jwt: this.jwtService.sign(payload),
     };
   }
+
+  async validateEmail(email: string) {
+    const user = await this.userRepository.findOneByEmail(email);
+    if (user) {
+      return true;
+    }
+    return false;
+  }
 }

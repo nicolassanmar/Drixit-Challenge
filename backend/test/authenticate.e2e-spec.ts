@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, VersioningType } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
@@ -12,6 +12,11 @@ describe('POST /api/v0/authenticate', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.setGlobalPrefix('api/');
+
+    app.enableVersioning({
+      type: VersioningType.URI,
+    });
     await app.init();
   });
 
@@ -20,7 +25,7 @@ describe('POST /api/v0/authenticate', () => {
       request(app.getHttpServer())
         .post('/api/v0/authenticate')
         .send({ email: 'it@drixit.com', password: 'some-password' })
-        .expect(200)
+        .expect(201)
         // body should have a jwt field
         .expect((res) => {
           expect(res.body.jwt).toBeDefined();
@@ -30,9 +35,9 @@ describe('POST /api/v0/authenticate', () => {
   it('should validate email, but not return jwt if password is not present', () => {
     return (
       request(app.getHttpServer())
-        .post('/api/v0/authenticate')
+        .post('/api/v0/authenticate/email')
         .send({ email: 'info@drixit.com' })
-        .expect(200)
+        .expect(201)
         // body should not have a jwt field
         .expect((res) => {
           expect(res.body.jwt).toBeUndefined();
@@ -44,5 +49,8 @@ describe('POST /api/v0/authenticate', () => {
       .post('/api/v0/authenticate')
       .send({ email: 'info@drixit.com', password: 'wrong-password' })
       .expect(401);
+  });
+  afterAll(async () => {
+    await app.close();
   });
 });
