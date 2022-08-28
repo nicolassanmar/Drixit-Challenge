@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Logger } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 
@@ -6,9 +6,10 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // get email from jwt to get user email
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')
-  async getMe() {
-    return 'asd';
+  async getMe(@Request() { user }) {
+    return await this.userService.getUserbyEmail(user.email);
   }
 }
