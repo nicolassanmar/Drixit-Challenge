@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Body } from '@nestjs/common';
+import { Controller, Post, UseGuards, Body, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import console from 'console';
 import { AuthService } from './auth.service';
@@ -23,5 +23,11 @@ export class AuthController {
   async validateEmail(@Body() data: any) {
     Logger.debug(data);
     return this.authService.validateEmail(data.email);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/validate')
+  async validateToken() {
+    return true;
   }
 }

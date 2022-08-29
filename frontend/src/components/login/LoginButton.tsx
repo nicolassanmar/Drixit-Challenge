@@ -12,7 +12,7 @@ export default function LoginButton(props: Props) {
   const button = (
     <button
       className="bg-blue-500 hover:bg-blue-700 disabled:bg-slate-200 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      type="button"
+      type="submit"
       onClick={() => {
         props.state === "next" ? props.onNext() : props.onSubmit();
         console.log(props.state);
@@ -23,13 +23,5 @@ export default function LoginButton(props: Props) {
     </button>
   );
 
-  return (
-    <>
-      {props.isLoading ? (
-        <img src="/spinner.svg" className="w-10"></img>
-      ) : (
-        button
-      )}
-    </>
-  );
+  return <>{props.isLoading ? <div>Loading...</div> : button}</>;
 }

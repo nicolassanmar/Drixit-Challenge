@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { LoginHeader } from "./LoginHeader";
 import FormInput from "../common/FormInput";
@@ -9,6 +9,15 @@ import LoginButton from "./LoginButton";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+  const navigate = useNavigate();
+
+  // if the user has a jwt stored, redirect to the user-info page
+  useEffect(() => {
+    if (localStorage.getItem("jwt")) {
+      navigate("/user-info");
+    }
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,6 +29,7 @@ export default function LoginForm() {
   } = useQuery(["isMailValid", email], () => fetchIsMailValid(email), {
     refetchOnWindowFocus: false,
     enabled: false,
+    staleTime: 1000 * 60,
   });
 
   // login query
@@ -31,12 +41,12 @@ export default function LoginForm() {
   } = useQuery(["isMailValid", email, password], () => login(email, password), {
     refetchOnWindowFocus: false,
     enabled: false,
+    staleTime: 1000 * 60,
   });
 
   const validEmail = data || false;
 
   // on succesfull request, navigate to user-info
-  const navigate = useNavigate();
   const onLogin = () => {
     refetchLogin().then(({ data }) => {
       if (data.jwt) {

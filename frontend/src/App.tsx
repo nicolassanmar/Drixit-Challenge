@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 
 import Layout from "./components/layout/Layout";
 import LoginPage from "./pages/LoginPage";
+import UserInfoPage from "./pages/UserInfoPage";
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,7 @@ function App() {
               path="/user-info"
               element={
                 <ProtectedRoute>
-                  <div>user-info</div>
+                  <UserInfoPage />
                 </ProtectedRoute>
               }
             />
