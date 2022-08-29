@@ -6,10 +6,13 @@ import { AutoAnimate } from "../common/AutoAnimate";
 import { useQuery } from "react-query";
 import { fetchIsMailValid, login } from "./LoginQueries";
 import LoginButton from "./LoginButton";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // validate mail query
   const {
     isLoading: isLoadingEmail,
     data,
@@ -19,6 +22,7 @@ export default function LoginForm() {
     enabled: false,
   });
 
+  // login query
   const {
     isLoading: isLoadingLogin,
     data: dataLogin,
@@ -30,8 +34,19 @@ export default function LoginForm() {
   });
 
   const validEmail = data || false;
+
+  // on succesfull request, navigate to user-info
+  const navigate = useNavigate();
+  const onLogin = () => {
+    refetchLogin().then(({ data }) => {
+      if (data.jwt) {
+        localStorage.setItem("jwt", data.jwt);
+        navigate("/user-info");
+      }
+    });
+  };
   return (
-    <div className="bg-white rounded-md max-w-md px-4 py-2 shadow-2xl flex-1">
+    <form className="bg-white rounded-md max-w-md px-4 py-2 shadow-2xl flex-1">
       <AutoAnimate>
         <LoginHeader />
         <FormInput
@@ -60,12 +75,13 @@ export default function LoginForm() {
         <div className="flex justify-center mt-4">
           <LoginButton
             state={validEmail ? "submit" : "next"}
-            onSubmit={() => refetchLogin()}
+            onSubmit={() => onLogin()}
             onNext={() => refetchEmail()}
             disabled={validEmail && password.length == 0}
+            isLoading={isLoadingEmail || isLoadingLogin}
           />
         </div>
       </AutoAnimate>
-    </div>
+    </form>
   );
 }

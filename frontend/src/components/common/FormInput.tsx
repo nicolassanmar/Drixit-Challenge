@@ -30,6 +30,9 @@ export default function FormInput(props: Props) {
         value={props.value}
         onChange={props.onChange}
         onBlur={props.onBlur}
+        autoComplete={
+          props.name === "password" ? "current-password" : props.name
+        }
       />
     </div>
   );

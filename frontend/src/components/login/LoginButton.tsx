@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 interface Props {
   state: "next" | "submit";
   disabled: boolean;
@@ -7,7 +9,6 @@ interface Props {
 }
 
 export default function LoginButton(props: Props) {
-  // render button if is not loading else render svg
   const button = (
     <button
       className="bg-blue-500 hover:bg-blue-700 disabled:bg-slate-200 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

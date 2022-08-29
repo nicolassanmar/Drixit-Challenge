@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 
 import Layout from "./components/layout/Layout";
@@ -23,6 +23,8 @@ function App() {
               }
             />
           </Route>
+          <Route index element={<Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
