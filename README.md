@@ -13,3 +13,11 @@ Some utility scripts in the backend solution make use of docker and docker-compo
 ## Design decisions
 
 These can be found in the `README.md` files inside each project (backend and frontend).
+
+## Running the full solution
+
+With docker-compose a containerized version of the backend and frontend applications can be deployed. This will also deploy a local instance of MongoDB, seeded with the users found in the challenge and mongo-express, a web interface to manage the database, at [http://localhost:8081/](http://localhost:8081/).
+
+```bash
+docker-compose up
+```
