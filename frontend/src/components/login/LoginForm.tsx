@@ -4,47 +4,66 @@ import { LoginHeader } from "./LoginHeader";
 import FormInput from "../common/FormInput";
 import { AutoAnimate } from "../common/AutoAnimate";
 import { useQuery } from "react-query";
-
-const fetchIsMailValid = async (email: string): Promise<boolean> => {
-  console.log("fetchIsMailValid", email);
-  const res = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/v0/authenticate`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-      }),
-    }
-  );
-  return res.json();
-};
+import { fetchIsMailValid, login } from "./LoginQueries";
+import LoginButton from "./LoginButton";
 
 export default function LoginForm() {
-  const email = "asd";
-  const { isLoading, isError, data, error } = useQuery(
-    ["isMailValid", email],
-    () => fetchIsMailValid(email)
-  );
-  const [validEmail, setValidEmail] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const {
+    isLoading: isLoadingEmail,
+    data,
+    refetch: refetchEmail,
+  } = useQuery(["isMailValid", email], () => fetchIsMailValid(email), {
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+
+  const {
+    isLoading: isLoadingLogin,
+    data: dataLogin,
+    isError,
+    refetch: refetchLogin,
+  } = useQuery(["isMailValid", email, password], () => login(email, password), {
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+
+  const validEmail = data || false;
   return (
     <div className="bg-white rounded-md max-w-md px-4 py-2 shadow-2xl flex-1">
       <AutoAnimate>
         <LoginHeader />
-        <FormInput label="Email" name="email" placeholder="name@drixit.com" />
+        <FormInput
+          label="Email"
+          name="email"
+          placeholder="name@drixit.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onBlur={() => refetchEmail()}
+          warn={!validEmail && data != undefined}
+          validated={validEmail}
+        />
         {validEmail ? (
-          <FormInput label="Password" name="password" placeholder="********" />
+          <FormInput
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="********"
+            onChange={(e) => setPassword(e.target.value)}
+            warn={dataLogin?.statusCode === 401}
+          />
         ) : (
           <div className="p-10"></div>
         )}
 
         <div className="flex justify-center mt-4">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
-            onClick={() => setValidEmail(!validEmail)}
-          >
-            Log in
-          </button>
+          <LoginButton
+            state={validEmail ? "submit" : "next"}
+            onSubmit={() => refetchLogin()}
+            onNext={() => refetchEmail()}
+            disabled={validEmail && password.length == 0}
+          />
         </div>
       </AutoAnimate>
     </div>

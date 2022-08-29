@@ -27,7 +27,9 @@ export class AuthService {
   }
 
   async validateEmail(email: string) {
+    Logger.debug(`validateEmail: ${email}`);
     const user = await this.userRepository.findOneByEmail(email);
+    Logger.debug(`user: ${JSON.stringify(user)}`);
     if (user) {
       return true;
     }

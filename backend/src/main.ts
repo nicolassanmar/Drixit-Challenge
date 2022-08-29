@@ -22,6 +22,9 @@ async function bootstrap() {
       },
     }),
   );
+  if (process.env.NODE_ENV !== 'production') {
+    app.enableCors();
+  }
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Drixit Challenge API')

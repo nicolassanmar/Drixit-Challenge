@@ -33,16 +33,13 @@ describe('POST /api/v0/authenticate', () => {
     );
   });
   it('should validate email, but not return jwt if password is not present', () => {
-    return (
-      request(app.getHttpServer())
-        .post('/api/v0/authenticate/email')
-        .send({ email: 'info@drixit.com' })
-        .expect(201)
-        // body should not have a jwt field
-        .expect((res) => {
-          expect(res.body.jwt).toBeUndefined();
-        })
-    );
+    return request(app.getHttpServer())
+      .post('/api/v0/authenticate/email')
+      .send({ email: 'info@drixit.com' })
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.jwt).toBeUndefined();
+      });
   });
   it('should not be authorized to login with a wrong password', () => {
     return request(app.getHttpServer())
