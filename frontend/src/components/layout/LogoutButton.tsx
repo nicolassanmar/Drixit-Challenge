@@ -13,7 +13,7 @@ export function LogoutButton(props: Props) {
 
   const deleteJWT = () => {
     props.onClick();
-    setJwt(undefined);
+    setJwt("");
     navigate("/login");
   };
   return (

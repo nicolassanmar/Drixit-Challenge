@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 import { jwtAtom } from "../../store";
+import Spinner from "./Spinner";
 
 const validateJWT = async (jwt: string) => {
   const response = await fetch("/api/v0/authenticate/validate", {
@@ -12,7 +13,6 @@ const validateJWT = async (jwt: string) => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-  console.log(response);
   if (response.status === 200) {
     return true;
   } else {
@@ -33,15 +33,15 @@ export default function ProtectedRoute({ children }: { children: any }) {
     ["validate-jwt", jwt],
     () => validateJWT(jwt),
     {
-      staleTime: 1000 * 60,
+      staleTime: 1000 * 60 * 10,
     }
   );
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
   if (!data) {
     console.log("invalid jwt");
-    setjwt(undefined);
+    setJwt("");
     // TODO: refetch the jwt using a refresh token
     navigate("/login");
     return;

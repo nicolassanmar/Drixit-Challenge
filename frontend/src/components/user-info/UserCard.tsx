@@ -1,5 +1,6 @@
 import { User } from "../../model";
 import RoleBadge from "../common/RoleBadge";
+import Spinner from "../common/Spinner";
 import UserMiscRow from "./UserMiscRow";
 
 interface Props {
@@ -7,7 +8,6 @@ interface Props {
 }
 
 export default function UserCard(props: Props) {
-  console.log(props.user);
   return (
     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
       <div className="flex flex-row">

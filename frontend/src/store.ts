@@ -1,3 +1,3 @@
 import { atomWithStorage } from "jotai/utils";
 
-export const jwtAtom = atomWithStorage("jwt", undefined);
+export const jwtAtom = atomWithStorage("jwt", "");

@@ -15,7 +15,6 @@ export default function LoginButton(props: Props) {
       type="submit"
       onClick={() => {
         props.state === "next" ? props.onNext() : props.onSubmit();
-        console.log(props.state);
       }}
       disabled={props.disabled}
     >

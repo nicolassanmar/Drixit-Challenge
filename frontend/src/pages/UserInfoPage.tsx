@@ -6,6 +6,7 @@ import { ApiError, User } from "../model";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { jwtAtom } from "../store";
+import Spinner from "../components/common/Spinner";
 
 const fetchMyUserInfo = async (jwt: string): Promise<User | ApiError> => {
   console.log("fetching user info ", jwt);
@@ -28,7 +29,6 @@ export default function UserInfoPage() {
 
   useEffect(() => {
     // if the user has no jwt stored, redirect to the login page
-    console.log(jwt);
     if (!jwt) {
       navigate("/login");
     }
@@ -39,13 +39,13 @@ export default function UserInfoPage() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   // if there is no data or the sever responde with an error, redirect to the login page
   if (!data || "message" in data) {
     console.log("invalid jwt", jwt);
-    setJwt(undefined);
+    setJwt("");
     navigate("/login");
     return <></>;
   }
