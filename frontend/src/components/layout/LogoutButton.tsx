@@ -1,13 +1,19 @@
 import { useNavigate } from "react-router-dom";
 
+import { useAtom } from "jotai";
+import { jwtAtom } from "../../store";
+
 interface Props {
   onClick: () => void;
 }
+
 export function LogoutButton(props: Props) {
   const navigate = useNavigate();
+  const [jwt, setJwt] = useAtom(jwtAtom);
+
   const deleteJWT = () => {
     props.onClick();
-    localStorage.removeItem("jwt");
+    setJwt(undefined);
     navigate("/login");
   };
   return (

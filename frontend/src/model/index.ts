@@ -1,1 +1,2 @@
-export type { User } from "./user.model";
+export type { User } from "./User.model";
+export type { ApiError } from "./ApiError.model";

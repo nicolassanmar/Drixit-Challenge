@@ -7,13 +7,18 @@ import { useQuery } from "react-query";
 import { fetchIsMailValid, login } from "./LoginQueries";
 import LoginButton from "./LoginButton";
 import { useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+
+import { jwtAtom } from "../../store";
 
 export default function LoginForm() {
   const navigate = useNavigate();
 
   // if the user has a jwt stored, redirect to the user-info page
+  const [jwt, setJwt] = useAtom(jwtAtom);
+
   useEffect(() => {
-    if (localStorage.getItem("jwt")) {
+    if (jwt) {
       navigate("/user-info");
     }
   }, []);
@@ -50,7 +55,7 @@ export default function LoginForm() {
   const onLogin = () => {
     refetchLogin().then(({ data }) => {
       if (data.jwt) {
-        localStorage.setItem("jwt", data.jwt);
+        setJwt(data.jwt);
         navigate("/user-info");
       }
     });

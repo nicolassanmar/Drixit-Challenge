@@ -1,13 +1,18 @@
 import { useQuery } from "react-query";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+
+import { jwtAtom } from "../../store";
 
 const validateJWT = async (jwt: string) => {
-  const response = await fetch("/api/v0/authenticate/validate-jwt", {
+  const response = await fetch("/api/v0/authenticate/validate", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
   });
+  console.log(response);
   if (response.status === 200) {
     return true;
   } else {
@@ -16,10 +21,14 @@ const validateJWT = async (jwt: string) => {
 };
 
 export default function ProtectedRoute({ children }: { children: any }) {
-  const jwt = localStorage.getItem("jwt");
-  if (!jwt) {
-    return <Navigate to="/login" replace />;
-  }
+  const [jwt, setjwt] = useAtom(jwtAtom);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // if the user has no jwt stored, redirect to the login page
+    if (!jwt) {
+      navigate("/login");
+    }
+  }, []);
   const { isLoading, data } = useQuery(
     ["validate-jwt", jwt],
     () => validateJWT(jwt),
@@ -32,9 +41,10 @@ export default function ProtectedRoute({ children }: { children: any }) {
   }
   if (!data) {
     console.log("invalid jwt");
-    localStorage.removeItem("jwt");
+    setjwt(undefined);
     // TODO: refetch the jwt using a refresh token
-    return <Navigate to="/login" replace />;
+    navigate("/login");
+    return;
   }
   return children;
 }
