@@ -21,7 +21,7 @@ const validateJWT = async (jwt: string) => {
 };
 
 export default function ProtectedRoute({ children }: { children: any }) {
-  const [jwt, setjwt] = useAtom(jwtAtom);
+  const [jwt, setJwt] = useAtom(jwtAtom);
   const navigate = useNavigate();
   useEffect(() => {
     // if the user has no jwt stored, redirect to the login page

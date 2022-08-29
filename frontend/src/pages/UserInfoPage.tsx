@@ -1,26 +1,12 @@
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
-import UserCard from "../components/user-info/UserCard";
-import { ApiError, User } from "../model";
-
 import { useAtom } from "jotai";
 import { useEffect } from "react";
+
 import { jwtAtom } from "../store";
 import Spinner from "../components/common/Spinner";
-
-const fetchMyUserInfo = async (jwt: string): Promise<User | ApiError> => {
-  console.log("fetching user info ", jwt);
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/v0/users/me`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
-  return response.json();
-};
+import UserCard from "../components/user-info/UserCard";
+import { fetchMyUserInfo } from "../components/user-info/UserQueries";
 
 export default function UserInfoPage() {
   const navigate = useNavigate();
